@@ -92,7 +92,7 @@ class Connection:
         db_port = kwargs.get('db_port') or 5432
         db_name = kwargs.get('db_name') or 'adb'
         db_user = kwargs.get('db_user') or os.getenv('DB_USER')
-        db_pwd = kwargs.get('db_pwd') or os.getenv('DB_PWD')
+        db_pwd = kwargs.get('db_pwd') or os.getenv('DB_PWD') or 'gpadmin'
 
         return psycopg2.connect("dbname='{}' user='{}' host='{}'" \
                                 "port='{}' password='{}'".format(db_name, db_user,

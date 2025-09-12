@@ -27,7 +27,7 @@ error_msg = """Таблица {}.{}
     level='WARNING',
     processing = ['DP2.0', 'marts', 'P3']
 )
-def check_not_null_constraints(conn, dp_schema, dp_object, dev_conn) -> None:
+def check_column_names_compliance(conn, dp_schema, dp_object, dev_conn) -> None:
     '''
     Checks if tables columns' names do not contain
     non-latin and non-numeric characters
