@@ -1,0 +1,21 @@
+{% macro check(check_obj) -%}
+[{{ check_obj.id }}] {{ check_obj.level.value }} | {{ check_obj.description }}
+Paths:
+{% for path in check_obj.path -%}
+  - {{ path }}
+{% endfor -%}
+{% if check_obj.ignore_path and check_obj.ignore_path is not none -%}
+Ignored:
+{% for path in check_obj.ignore_path -%}
+  - {{ path }}
+{% endfor -%}
+{% endif -%}
+{% if check_obj.depends_on and check_obj.depends_on is not none -%}
+Depends on: {% for id in check_obj.depends_on %}{{ id }}{% endfor %}
+{% endif %}
+{% endmacro -%}
+
+{% for check_obj in checks|sort(attribute='id') -%}
+{{ check(check_obj) }}
+
+{%- endfor -%}

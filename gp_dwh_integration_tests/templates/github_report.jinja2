@@ -1,0 +1,24 @@
+{% macro checkResult(result) -%}
+{%- if result.status == 1 %} :x:  FAILED
+{%- elif result.status == 2 %} :warning:  WARNING
+{%- elif result.status == 3 %} :skull:  NOT COMPLETED
+{%- else %} SUCCESS{% endif %}
+[[{{ result.id }}]](https://github.com/ArtemiyNaumov/greenplum-dwh-integration-tests/blob/master/docs/Checks.md#{{ result.id }}) 
+{% if result.status != 0 %}Exception: {{ result.exception }}{% endif %}
+
+
+{%- endmacro -%}
+
+{% set vars = namespace(schema=schema) -%}
+### Результаты интеграционного тестирования
+
+
+{% for result in results|sort(attribute='id') -%}
+{% if result.status != 0 or show == 'all' -%}
+{% if result.status == 1 %}{{ checkResult(result) }}
+{%- elif result.status == 2 %}{{ checkResult(result) }}
+{%- elif result.status == 3 %}{{ checkResult(result) }}{% endif %}
+
+{% endif -%}
+{%- endfor %}
+

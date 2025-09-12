@@ -1,0 +1,2 @@
+include gp_dwh_integration_tests/templates/*.jinja2
+recursive-include gp_dwh_integration_tests/checks *.py

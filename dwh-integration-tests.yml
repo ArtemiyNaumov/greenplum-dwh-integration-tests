@@ -1,0 +1,19 @@
+x-common-settings: &common
+    force_dependencies: True
+    progress_bar: False
+
+test:
+    <<: *common
+
+checks:
+    T006:
+        level: WARNING
+        ignore:
+            - object: sample_schema_ods.sample_table_1
+              valid_to: 2050-01-01
+            - object: sample_schema_ods.sample_table_2
+              valid_to: 2050-01-01
+
+ignore_schema:
+    - schema: metadata
+      valid_to: 2050-01-01

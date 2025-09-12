@@ -1,0 +1,23 @@
+{% macro checkResult(result) -%}
+[{{ result.id }}] {{ result.path }} | 
+{%- if result.status == 1 %} FAILED
+{%- elif result.status == 2 %} WARNING
+{%- elif result.status == 3 %} NOT COMPLETED
+{%- else %} SUCCESS{% endif %}
+{% if result.status != 0 %}Exception: {{ result.exception }}{% endif %}
+{%- endmacro -%}
+
+{% set vars = namespace(total=results|length(), succeed=0, warnings=0, failed=0, percent=0.0) -%}
+{% for result in results|sort(attribute='id') -%}
+{% if result.status != 0 or show == 'all' -%}
+{% if result.status == 1 %}{{ checkResult(result) }}{% set vars.failed = vars.failed + 1 %}
+{%- elif result.status == 2 %}{{ checkResult(result) }}{% set vars.warnings = vars.warnings + 1 %}
+{%- elif result.status == 3 %}{{ checkResult(result) }}{% endif %}
+
+{% endif -%}
+{%- endfor %}
+{% set vars.succeed = vars.total - vars.failed - vars.warnings -%}
+{% set vars.percent = 100.0 * vars.succeed / vars.total -%}
+
+checks executed: {{ vars.total }}; warnings: {{ vars.warnings }}; failed: {{ vars.failed }}; succeed: {{ vars.succeed }} [{{ vars.percent|round(2, 'floor') }}%]
+{% if vars.succeed == vars.total - vars.warnings %}CHECKS SUCCEED{% else %}CHECKS FAILED{% endif %}
